@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bold info</title>
+    <meta charset="utf-8">
+    <meta name="generator" content="knitr" />
+    <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/github.min.css">
+
+<style type="text/css">
+body {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+    height:100%;
+    font-size: 16px;
+    line-height: 24px;
+    color: #30404f;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #112233;
+    line-height: 1em;
+    font-weight: normal;
+    margin: 0 0 15px 0;
+}
+
+p {
+    margin: 0 0 15px 0;
+    font-size:17px;
+}
+
+#footer p{
+    margin:0;
+    font-size:12px;
+    text-align: center;
+}
+
+a{
+    color:#0088cc;
+    text-decoration:none;
+}
+
+a:hover,a:focus{
+    color:#005580;
+    text-decoration:underline;
+}
+
+#container {
+    position: relative;
+    margin: 0;
+    height:100%;
+}
+
+body > #container { height: auto; min-height: 100%; }
+
+table{
+    width:100%;
+    border: 0;
+    outline: 0;
+}
+
+td.docs{
+    width: 50%;
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 25px 1px 50px;
+}
+
+
+td.code{
+    background: #f5f5ff;
+    padding: 10px 25px 1px 50px;
+    overflow-x: hidden;
+    vertical-align: top;
+}
+
+code{
+    font-size:12px;
+    margin: 0;
+    padding: 0;
+}
+
+td.docs code{
+    background: #f8f8ff;
+    border: 1px solid #dedede;
+    font-size: 80%;
+    padding: 0 0.2em;
+}
+
+td.docs img{
+  max-width: 100%;
+}
+
+pre code{
+    padding:2px 4px;
+    background:#f5f5ff;
+}
+
+td.code pre code{
+    line-height: 18px;
+}
+
+.pilwrap {
+    position: relative;
+}
+.pilcrow {
+    font: 12px Arial;
+    text-decoration: none;
+    color: rgb(69, 69, 69);
+    position: absolute;
+    top: 3px;
+    left: -20px;
+    padding: 1px 2px;
+    opacity: 0;
+}
+
+td.docs:hover .pilcrow {
+    opacity: 1;
+}
+
+blockquote {
+    border-left: 4px solid #DDD;
+    padding: 0 15px;
+    color: #777;
+}
+div.handler{
+      width: 5px;
+      padding: 0;
+      cursor: col-resize;
+      position: absolute;
+      z-index: 5;
+}
+</style>
+
+    <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+    <script src="http://yandex.st/highlightjs/8.0/languages/r.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </head>
+  <body>
+    <div id="container">
+      <table cellspacing="1"><!--table start-->
+<tr id="row1"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row1">&para;</a></div><!--
+%\VignetteEngine{knitr::docco_classic}
+%\VignetteIndexEntry{bold vignette}
+-->
+
+<p><code>bold</code> is an R package to connect to BOLD Systems \url{<a href="http://www.boldsystems.org/">http://www.boldsystems.org/</a>} via their API. Functions in <code>bold</code> let you search for sequence data, specimen data, sequence + specimen data, and download raw trace files.</p>
+
+<h3>bold info</h3>
+
+<ul>
+<li><a href="http://boldsystems.org/">BOLD home page</a></li>
+<li><a href="boldsystems.org/index.php/resources/api">BOLD API docs</a></li>
+</ul>
+
+<h3>Using bold</h3>
+
+<p><strong>Install</strong></p>
+
+</td><td class="code"></td></tr><tr id="row2"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row2">&para;</a></div><p>Install <code>bold</code></p></td><td class="code"><pre><code class="r">devtools::install_github(&quot;ropensci/bold&quot;)
+</code></pre>
+<pre><code class="r">library(&quot;bold&quot;)
+</code></pre></td></tr><tr id="row3"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row3">&para;</a></div>
+
+<h3>Search for sequence data only</h3>
+
+</td><td class="code"></td></tr><tr id="row4"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row4">&para;</a></div><p>Default is to get a list back</p></td><td class="code"><pre><code class="r">bold_seq(taxon=&#39;Coelioxys&#39;)[1:2]
+</code></pre>
+<pre><code>## [[1]]
+## [[1]]$id
+## [1] &quot;CNPPJ1450-12&quot;
+## 
+## [[1]]$name
+## [1] &quot;Coelioxys sayi&quot;
+## 
+## [[1]]$gene
+## [1] &quot;CNPPJ1450-12&quot;
+## 
+## [[1]]$sequence
+## [1] &quot;TATTATATATATAATTTTTGCAATATGATCAGGAATAATTGGATCTTCCTTAAGAATAATTATTCGAATAGAATTAAGAATT---CCAGGATCATGAATTAGTAATGACCAAATTTATAATTCCTTTATTACAGCGCACGCATTTTTAATAATTTTCTTTTTAGTTATACCGTTTTTAATTGGTGGATTTGGAAATTGACTCACACCTTTAATATTAGGAGCCCCTGATATAGCTTTCCCCCGTATAAATAATATTAGATTTTGATTATTACCCCCCTCATTATTAATATTATTATCAAGAAATTTAATTAACCCAAGACCTGGAACAGGATGAACAGTTTATCCACCACTATCTTCTTATACTTATCATCCTTCTCCTTCTGTAGATCTAGCAATTTTTTCTTTACACTTATCAGGTATTTCTTCTATTATTGGATCAATAAATTTTATTGTAACAATTTTATTAATAAAAAATTATTCAATAAATTATAATCAAATACCTTTATTTCCCTGATCTGTTTTAATTACAACAATTTTATTACTATTATCACTACCTGTATTAGCAGGAGCAATTACAATATTATTATTT---------GATCGAAATTTAAATTCATCATTTTTCGACCCTATAGGAGGAGGAG-----------------------------&quot;
+## 
+## 
+## [[2]]
+## [[2]]$id
+## [1] &quot;GBMIN26386-13&quot;
+## 
+## [[2]]$name
+## [1] &quot;Coelioxys sp. HMG-2011&quot;
+## 
+## [[2]]$gene
+## [1] &quot;GBMIN26386-13&quot;
+## 
+## [[2]]$sequence
+## [1] &quot;CGAATAAATAATATTAGATTTTGATTATTACCCCCATCACTATTATTACTTCTATTAAGTAATTTGATTAAACCAAGACCAGGTACAGGATGAACCGTATACCCTCCCTTATCTTTATATCTTTATCACCCTTCACCATCAGTTGATTTTGCAATTTTTTCTTTACATTTATCAGGAATTTCATCTATTATTGGTTCATTAAATTTTATTGTAACAATTTTAATAATAAAAAATTGATCTTTAAATTATAGACAAATATCATTATTTCCTTGATCAATTTTTATTACTACAATTTTATTATTA&quot;
+</code></pre></td></tr><tr id="row5"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row5">&para;</a></div>
+
+<p>You can optionally get back the <code>httr</code> response object</p></td><td class="code"><pre><code class="r">res &lt;- bold_seq(taxon=&#39;Coelioxys&#39;, response=TRUE)
+res$headers
+</code></pre>
+<pre><code>## $date
+## [1] &quot;Wed, 28 May 2014 20:11:59 GMT&quot;
+## 
+## $server
+## [1] &quot;Apache/2.2.15 (Red Hat)&quot;
+## 
+## $`x-powered-by`
+## [1] &quot;PHP/5.3.15&quot;
+## 
+## $`content-disposition`
+## [1] &quot;attachment; filename=fasta.fas&quot;
+## 
+## $connection
+## [1] &quot;close&quot;
+## 
+## $`transfer-encoding`
+## [1] &quot;chunked&quot;
+## 
+## $`content-type`
+## [1] &quot;application/x-download&quot;
+## 
+## $status
+## [1] &quot;200&quot;
+## 
+## $statusmessage
+## [1] &quot;OK&quot;
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;insensitive&quot; &quot;list&quot;
+</code></pre></td></tr><tr id="row6"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row6">&para;</a></div>
+
+<h3>Search for specimen data only</h3>
+
+</td><td class="code"></td></tr><tr id="row7"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row7">&para;</a></div><p>By default you download <code>tsv</code> format data, which is given back to you as a <code>data.frame</code></p></td><td class="code"><pre><code class="r">res &lt;- bold_specimens(taxon=&#39;Osmia&#39;)
+head(res[,1:8])
+</code></pre>
+<pre><code>##     processid sampleid recordID catalognum fieldnum
+## 1 GBAH0293-06 AF250940   470890                    
+## 2 GBAH3879-08 EU726628   856410   EU726628         
+## 3 GBAH3880-08 EU726627   856411   EU726627         
+## 4 GBAH3888-08 EU726619   856419   EU726619         
+## 5 GBAH3904-08 EU726603   856435   EU726603         
+## 6 GBAH3909-08 EU726598   856440   EU726598         
+##        institution_storing      bin_uri phylum_taxID
+## 1 Mined from GenBank, NCBI BOLD:AAD6282           20
+## 2 Mined from GenBank, NCBI BOLD:AAA4494           20
+## 3 Mined from GenBank, NCBI BOLD:AAA4494           20
+## 4 Mined from GenBank, NCBI BOLD:AAA4494           20
+## 5 Mined from GenBank, NCBI BOLD:AAA4494           20
+## 6 Mined from GenBank, NCBI BOLD:AAA4494           20
+</code></pre></td></tr><tr id="row8"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row8">&para;</a></div>
+
+<h3>Search for specimen plus sequence data</h3>
+
+</td><td class="code"></td></tr><tr id="row9"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row9">&para;</a></div><p>By default you download <code>tsv</code> format data, which is given back to you as a <code>data.frame</code></p></td><td class="code"><pre><code class="r">res &lt;- bold_seqspec(taxon=&#39;Osmia&#39;, sepfasta=TRUE)
+res$fasta[1:2]
+</code></pre>
+<pre><code>## $`GBAH0293-06`
+## [1] &quot;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------TTAATGTTAGGGATTCCAGATATAGCTTTTCCACGAATAAATAATATTAGATTTTGACTGTTACCTCCATCTTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGTCCTGGAACAGGATGAACAGTTTATCCTCCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAGTTGATTTAGCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAATATTTCTTTAAAATATATTCAATTACCTTTATTTTCTTGATCTGTATTTATTACTACTATTCTTTTATTATTTTCTTTACCTGTATTAGCTGGAGCTATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCAACAGGAGGGGGAGATCCAATTCTTTATCAACATTTATTTTGATTTTTTGGTCATCCTGAAGTTTATATTTTAATTTTACCTGGATTTGGATTAATTTCTCAAATTATTTCTAATGAAAGAGGAAAAAAAGAAACTTTTGGAAATATTGGTATAATTTATGCTATATTAAGAATTGGACTTTTAGGTTTTATTGTT---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;
+## 
+## $`GBAH3879-08`
+## [1] &quot;---------------------------------------ATTCTATATATAATTTTTGCTTTATGATCTGGAATAATTGGATCAGCAATA---AGAATTATTATTCGAATAGAATTAAGTATCCCAGGATCATGAATTTCTAAT---GATCAAATTTATAATTCTTTAGTAACTGGTCATGCCTTTTTAATAATTTTTTTTCTTGTCATACCATTTTTAATTGGAGGATTTGGAAATTGATTAATTCCATTAATA---TTAGGAATTCCAGATATAGCTTTTCCTCGAATAAATAATATTAGATTTTGACTTTTACCACCATCCTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGACCTGGAACAGGATGAACAATTTATCCACCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAGTTGATTTA---GCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAACATTTCCTTAAAATATATTCAATTATCCTTATTTCCTTGATCTGTATTTATTACTACTATTCTTTTACTTTTTTCTTTACCTGTATTAGCTGGA---GCAATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCAACAGGAGGTGGAGATCCAATTCTTTATCAACATTTA------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;
+</code></pre></td></tr><tr id="row10"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row10">&para;</a></div>
+
+<p>Or you can index to a specific sequence like</p></td><td class="code"><pre><code class="r">res$fasta[&#39;GBAH0293-06&#39;]
+</code></pre>
+<pre><code>## $`GBAH0293-06`
+## [1] &quot;------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------TTAATGTTAGGGATTCCAGATATAGCTTTTCCACGAATAAATAATATTAGATTTTGACTGTTACCTCCATCTTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGTCCTGGAACAGGATGAACAGTTTATCCTCCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAGTTGATTTAGCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAATATTTCTTTAAAATATATTCAATTACCTTTATTTTCTTGATCTGTATTTATTACTACTATTCTTTTATTATTTTCTTTACCTGTATTAGCTGGAGCTATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCAACAGGAGGGGGAGATCCAATTCTTTATCAACATTTATTTTGATTTTTTGGTCATCCTGAAGTTTATATTTTAATTTTACCTGGATTTGGATTAATTTCTCAAATTATTTCTAATGAAAGAGGAAAAAAAGAAACTTTTGGAAATATTGGTATAATTTATGCTATATTAAGAATTGGACTTTTAGGTTTTATTGTT---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;
+</code></pre></td></tr><tr id="row11"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row11">&para;</a></div>
+
+<h3>Get trace files</h3>
+
+</td><td class="code"></td></tr><tr id="row12"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row12">&para;</a></div><p>This function downloads files to your machine - it does not load them into your R session - but prints out where the files are for your information.</p></td><td class="code"><pre><code class="r">bold_trace(taxon=&#39;Osmia&#39;, quiet=TRUE)
+</code></pre>
+<pre><code>## Trace file extracted with files: 
+## 
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/HMBCH056-07_F.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/HMBCH056-07_R.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/HMBCH063-07_F.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/HMBCH063-07_R.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/Osm_aur_T505_LCOHym_D04_008_copy.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/Osm_aur_T505_NancyFull_D10_008_copy.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/Osm_ruf_T309_LCOHym_C06_006_copy.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/Osm_ruf_T309_Nancy_C06_006_copy.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/TRACE_FILE_INFO.txt
+</code></pre></td></tr><tr id="row13"><td class="docs"><div class="pilwrap"><a class="pilcrow" href="#row13">&para;</a></div>
+</td><td class="code"></td></tr>
+      </table><!--table end-->
+    </div>
+  <script src="http://code.jquery.com/jquery-2.0.2.js"></script>
+  <script src="http://yihui.name/knitr/js/docco-resize.js"></script>
+  </body>
+</html>
