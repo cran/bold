@@ -8,7 +8,6 @@ c <- bold_seq(taxon='Coelioxys', response=TRUE)
 test_that("bold_seq returns the correct dimensions or values", {
   expect_equal(length(a[[1]]), 4)
   expect_equal(length(b[[2]]), 4)
-  expect_equal(length(c), 8)
   
   expect_equal(c$status_code, 200)
   expect_equal(c$headers$`content-type`, "application/x-download")
@@ -24,4 +23,9 @@ test_that("bold_seq returns the correct classes", {
   
   expect_is(c, "response")
   expect_is(c$headers, "insensitive")
+})
+
+test_that("bold_seq returns correct error when parameters empty or not given", {
+  expect_error(bold_seq(taxon=''), "must provide a non-empty value")
+  expect_error(bold_seq(), "must provide a non-empty value")
 })

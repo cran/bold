@@ -5,9 +5,9 @@ Description: A programmatic interface to the Web Service methods provided by
     searching by sequences by taxonomic names, ids, collectors, and
     institutions; as well as a function for searching for specimens, and
     downloading trace files.
-Version: 0.1.0
+Version: 0.1.2
 License: MIT + file LICENSE
-Date: 2014-05-28
+Date: 2014-07-24
 Authors@R: c(person("Scott", "Chamberlain", role = c("aut", "cre"),
     email = "myrmecocystus@gmail.com"))
 URL: https://github.com/ropensci/bold
@@ -15,9 +15,9 @@ BugReports: https://github.com/ropensci/bold/issues
 VignetteBuilder: knitr
 Imports: XML, httr, stringr, assertthat
 Suggests: knitr, testthat
-Packaged: 2014-05-28 21:51:58 UTC; sacmac
+Packaged: 2014-07-24 19:33:11 UTC; sacmac
 Author: Scott Chamberlain [aut, cre]
 Maintainer: Scott Chamberlain <myrmecocystus@gmail.com>
 NeedsCompilation: no
 Repository: CRAN
-Date/Publication: 2014-05-29 00:03:57
+Date/Publication: 2014-07-24 21:42:19

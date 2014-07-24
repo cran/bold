@@ -7,7 +7,6 @@ c <- bold_seqspec(taxon='Osmia', sepfasta=TRUE)
 
 test_that("bold_seqspec returns the correct dimensions or values", {
   expect_equal(ncol(a), 63)
-  expect_equal(length(b), 8)
   expect_equal(length(c), 2)
   
   expect_equal(b$status_code, 200)
@@ -26,4 +25,9 @@ test_that("bold_seqspec returns the correct classes", {
   expect_is(a$directions, "character")
   
   expect_is(b$headers, "insensitive")
+})
+
+test_that("bold_seq returns correct error when parameters empty or not given", {
+  expect_error(bold_seqspec(taxon=''), "must provide a non-empty value")
+  expect_error(bold_seqspec(), "must provide a non-empty value")
 })
