@@ -1,4 +1,6 @@
-bold_compact <- function (l) Filter(Negate(is.null), l)
+bbase <- function() 'http://www.boldsystems.org/index.php/'
+
+bc <- function (l) Filter(Negate(is.null), l)
 
 split_fasta <- function(x){
   temp <- paste(">", x, sep="")
@@ -28,4 +30,36 @@ check_args_given_nonempty <- function(arguments, x){
     if(any(argslengths == 0))
       stop(sprintf("You must provide a non-empty value to at least one of\n  %s", paste0(paramnames, collapse = "\n  ")))
   }   
+}
+
+process_response <- function(x, y, z, w){
+  tt <- content(x, as = "text")
+  out <- if(x$status_code > 202) "stop" else jsonlite::fromJSON(tt)
+  if( length(out)==0 || identical(out[[1]], list()) || out == "stop" ){
+    data.frame(input=y, stringsAsFactors = FALSE)
+  } else {
+    if(w %in% c("stats",'images','geo','sequencinglabs','depository')) out <- out[[1]]
+    trynames <- tryCatch(as.numeric(names(out)), warning=function(w) w)
+    if(!is(trynames, "simpleWarning")) names(out) <- NULL
+    if(!is.null(names(out))){ df <- data.frame(out, stringsAsFactors = FALSE) } else {
+      df <- do.call(rbind.fill, lapply(out, data.frame, stringsAsFactors = FALSE))
+    }
+    row.names(df) <- NULL
+    if("parentid" %in% names(df)) df <- sort_df(df, "parentid")
+    row.names(df) <- NULL
+    data.frame(input=y, df, stringsAsFactors = FALSE)
+  }
+}
+
+get_response <- function(args, url, ...){
+  res <- GET(url, query=args, ...)
+  assert_that(res$headers$`content-type`=='text/html; charset=utf-8')
+  res
+}
+
+b_GET <- function(url, args, ...){  
+  out <- GET(url, query=args, ...)
+  stop_for_status(out)
+  assert_that(out$headers$`content-type`=='application/x-download')
+  out
 }

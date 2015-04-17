@@ -5,6 +5,18 @@
 
 <title>bold info</title>
 
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
 <!-- Styles for R syntax highlighter -->
 <style type="text/css">
    pre .operator,
@@ -45,9 +57,6 @@ var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/<
 hljs.initHighlightingOnLoad();
 </script>
 
-<!-- MathJax scripts -->
-<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 
 <style type="text/css">
@@ -60,6 +69,7 @@ body, td {
 body {
   max-width: 800px;
   margin: auto;
+  padding: 1em;
   line-height: 20px;
 }
 
@@ -67,28 +77,28 @@ tt, code, pre {
    font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
 
-h1 { 
-   font-size:2.2em; 
+h1 {
+   font-size:2.2em;
 }
 
-h2 { 
-   font-size:1.8em; 
+h2 {
+   font-size:1.8em;
 }
 
-h3 { 
-   font-size:1.4em; 
+h3 {
+   font-size:1.4em;
 }
 
-h4 { 
-   font-size:1.0em; 
+h4 {
+   font-size:1.0em;
 }
 
-h5 { 
-   font-size:0.9em; 
+h5 {
+   font-size:0.9em;
 }
 
-h6 { 
-   font-size:0.8em; 
+h6 {
+   font-size:0.8em;
 }
 
 a:visited {
@@ -98,7 +108,9 @@ a:visited {
 pre, img {
   max-width: 100%;
 }
-
+pre {
+  overflow-x: auto;
+}
 pre code {
    display: block; padding: 0.5em;
 }
@@ -132,54 +144,54 @@ hr {
 }
 
 @media print {
-   * { 
-      background: transparent !important; 
-      color: black !important; 
-      filter:none !important; 
-      -ms-filter: none !important; 
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
    }
 
-   body { 
-      font-size:12pt; 
-      max-width:100%; 
-   }
-       
-   a, a:visited { 
-      text-decoration: underline; 
+   body {
+      font-size:12pt;
+      max-width:100%;
    }
 
-   hr { 
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
       visibility: hidden;
       page-break-before: always;
    }
 
-   pre, blockquote { 
-      padding-right: 1em; 
-      page-break-inside: avoid; 
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
    }
 
-   tr, img { 
-      page-break-inside: avoid; 
+   tr, img {
+      page-break-inside: avoid;
    }
 
-   img { 
-      max-width: 100% !important; 
+   img {
+      max-width: 100% !important;
    }
 
-   @page :left { 
-      margin: 15mm 20mm 15mm 10mm; 
-   }
-     
-   @page :right { 
-      margin: 15mm 10mm 15mm 20mm; 
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
    }
 
-   p, h2, h3 { 
-      orphans: 3; widows: 3; 
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
    }
 
-   h2, h3 { 
-      page-break-after: avoid; 
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
    }
 }
 </style>
@@ -194,13 +206,13 @@ hr {
 %\VignetteIndexEntry{bold vignette}
 -->
 
-<p><code>bold</code> is an R package to connect to BOLD Systems \url{<a href="http://www.boldsystems.org/">http://www.boldsystems.org/</a>} via their API. Functions in <code>bold</code> let you search for sequence data, specimen data, sequence + specimen data, and download raw trace files.</p>
+<p><code>bold</code> is an R package to connect to <a href="http://www.boldsystems.org/">BOLD Systems</a> via their API. Functions in <code>bold</code> let you search for sequence data, specimen data, sequence + specimen data, and download raw trace files.</p>
 
 <h3>bold info</h3>
 
 <ul>
 <li><a href="http://boldsystems.org/">BOLD home page</a></li>
-<li><a href="boldsystems.org/index.php/resources/api">BOLD API docs</a></li>
+<li><a href="http://boldsystems.org/index.php/resources/api">BOLD API docs</a></li>
 </ul>
 
 <h3>Using bold</h3>
@@ -226,51 +238,47 @@ hr {
 
 <p><code>bold_tax_name</code> searches for names with names.</p>
 
-<pre><code class="r">bold_tax_name(name=&#39;Diplura&#39;)
+<pre><code class="r">bold_tax_name(name = &#39;Diplura&#39;)
 </code></pre>
 
-<pre><code>##      name taxonrep  taxid   taxon tax_rank tax_division parentid
-## 1 Diplura  Diplura 591238 Diplura    order      Animals       82
-## 2 Diplura     &lt;NA&gt; 603673 Diplura    genus     Protists    53974
-##         parentname
-## 1          Insecta
-## 2 Scytosiphonaceae
+<pre><code>##     input  taxid   taxon tax_rank tax_division parentid       parentname
+## 1 Diplura 591238 Diplura    order      Animals       82          Insecta
+## 2 Diplura 603673 Diplura    genus     Protists    53974 Scytosiphonaceae
+##   taxonrep
+## 1  Diplura
+## 2     &lt;NA&gt;
 </code></pre>
 
-<pre><code class="r">bold_tax_name(name=c(&#39;Diplura&#39;,&#39;Osmia&#39;))
+<pre><code class="r">bold_tax_name(name = c(&#39;Diplura&#39;, &#39;Osmia&#39;))
 </code></pre>
 
-<pre><code>##      name taxonrep  taxid   taxon tax_rank tax_division parentid
-## 1 Diplura  Diplura 591238 Diplura    order      Animals       82
-## 2   Osmia     &lt;NA&gt; 603673 Diplura    genus     Protists    53974
-## 3 Diplura    Osmia   4940   Osmia    genus      Animals     4962
-## 4   Osmia    Osmia   4940   Osmia    genus      Animals     4962
-##         parentname
-## 1          Insecta
-## 2 Scytosiphonaceae
-## 3     Megachilinae
-## 4     Megachilinae
+<pre><code>##     input  taxid   taxon tax_rank tax_division parentid       parentname
+## 1 Diplura 591238 Diplura    order      Animals       82          Insecta
+## 2 Diplura 603673 Diplura    genus     Protists    53974 Scytosiphonaceae
+## 3   Osmia   4940   Osmia    genus      Animals     4962     Megachilinae
+##   taxonrep
+## 1  Diplura
+## 2     &lt;NA&gt;
+## 3    Osmia
 </code></pre>
 
 <h3>Search for taxonomic names via BOLD identifiers</h3>
 
 <p><code>bold_tax_id</code> searches for names with BOLD identifiers.</p>
 
-<pre><code class="r">bold_tax_id(id=88899)
+<pre><code class="r">bold_tax_id(id = 88899)
 </code></pre>
 
-<pre><code>##      id taxid   taxon tax_rank tax_division parentid parentname
+<pre><code>##   input taxid   taxon tax_rank tax_division parentid parentname
 ## 1 88899 88899 Momotus    genus      Animals    88898  Momotidae
 </code></pre>
 
-<pre><code class="r">bold_tax_id(id=c(88899,125295))
+<pre><code class="r">bold_tax_id(id = c(88899, 125295))
 </code></pre>
 
-<pre><code>##       id  taxid      taxon tax_rank tax_division parentid parentname
+<pre><code>##    input  taxid      taxon tax_rank tax_division parentid parentname
 ## 1  88899  88899    Momotus    genus      Animals    88898  Momotidae
-## 2 125295  88899    Momotus    genus      Animals    88898  Momotidae
-## 3  88899 125295 Helianthus    genus       Plants   100962 Asteraceae
-## 4 125295 125295 Helianthus    genus       Plants   100962 Asteraceae
+## 2 125295 125295 Helianthus    genus       Plants   100962 Asteraceae
 </code></pre>
 
 <h3>Search for sequence data only</h3>
@@ -279,45 +287,45 @@ hr {
 
 <p>The default is to get a list back</p>
 
-<pre><code class="r">bold_seq(taxon=&#39;Coelioxys&#39;)[1:2]
+<pre><code class="r">bold_seq(taxon = &#39;Coelioxys&#39;)[1:2]
 </code></pre>
 
 <pre><code>## [[1]]
 ## [[1]]$id
-## [1] &quot;CNEID3374-12&quot;
+## [1] &quot;BCHYM446-13&quot;
 ## 
 ## [[1]]$name
-## [1] &quot;Coelioxys funeraria&quot;
+## [1] &quot;Coelioxys afra&quot;
 ## 
 ## [[1]]$gene
-## [1] &quot;CNEID3374-12&quot;
+## [1] &quot;BCHYM446-13&quot;
 ## 
 ## [[1]]$sequence
-## [1] &quot;TATAATATATATAATTTTTGCAATATGATCAGGAATAATTGGTTCTTCATTAAGAATAATTATCCGAATAGAATTAAGAATCCCAGGATCTTGAATTAATAATGATCAAATTTATAATTCTTTTATCACAGCTCACGCATTTTTAATAATTTTTTTTTTAGTTATACCTTTTTTAATTGGAGGATTTGGTAATTGATTAGCCCCTTTAATATTAGGAGCCCCTGATATAGCTTTCCCTCGAATAAACAACATTAGATTTTGATTATTACCTCCTTCCTTATTAATACTTTTATCTAGTAATTTAATTACCCCTAGACCAGGGACAGGGTGAACTATTTACCCTCCATTATCTTTATATAATTATCANCCTTCTCCATCTGTTGATTTAGCAATTTTTTCTTTACATTTATCAGGAATTTCCTCTATTATTGGATCAATAAATTTCATTGTAACAATTTTAATAATAAAAAATTTTTCAATAAATTACAATCAAATACCTTTATTTCCATGATCAATTCTAATTACTACAATTTTATTATTATTATCATTACCTGTATTAGCAGGAGCAATTACAATATTATTATTTGATCGTAATTTAAATTCTTCATTTTTTGATCCAATAGGAGGAGGAGA---------&quot;
+## [1] &quot;-------------------------------------------------------------------------------------------------------------------------------------------TTTTTAATAATTTTTTTTTTAGTTATACCATTTTTAATTGGAGGATTTGGAAATTGATTAGTACCTTTAATACTAGGAGCCCCCGATATAGCTTTTCCACGAATAAATAATGTAAGATTTTGACTATTACCTCCCTCAATTTTCTTATTATTATCAAGAACCCTAATTAACCCAAGAGCTGGTACTGGATGAACTGTANCTCCTCCTTTATCCTTATATACATTTCATGCCTCACCTTCCGTTGATTTAGCAATTTTTTCACTTCATTTATCAGGAATTTCATCAATTATTGGATCAATAAATTTTATTGTTACAATCTTAATAATAAAAAATTTTTCTTTAAATTATAGACAAATACCATTATTTTCATGATCAGTTTTAATTACTACAATTTTACTTTTATTATCATTACCAATTTTAGCTGGAGCAATTACTATACTCCTATTTGATCGAAATTTAAATACCTCATTCTTTGACC-----------------------------------------&quot;
 ## 
 ## 
 ## [[2]]
 ## [[2]]$id
-## [1] &quot;GBMIN26386-13&quot;
+## [1] &quot;FBAPB481-09&quot;
 ## 
 ## [[2]]$name
-## [1] &quot;Coelioxys sp. HMG-2011&quot;
+## [1] &quot;Coelioxys afra&quot;
 ## 
 ## [[2]]$gene
-## [1] &quot;GBMIN26386-13&quot;
+## [1] &quot;FBAPB481-09&quot;
 ## 
 ## [[2]]$sequence
-## [1] &quot;CGAATAAATAATATTAGATTTTGATTATTACCCCCATCACTATTATTACTTCTATTAAGTAATTTGATTAAACCAAGACCAGGTACAGGATGAACCGTATACCCTCCCTTATCTTTATATCTTTATCACCCTTCACCATCAGTTGATTTTGCAATTTTTTCTTTACATTTATCAGGAATTTCATCTATTATTGGTTCATTAAATTTTATTGTAACAATTTTAATAATAAAAAATTGATCTTTAAATTATAGACAAATATCATTATTTCCTTGATCAATTTTTATTACTACAATTTTATTATTA&quot;
+## [1] &quot;----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------TTTCCACGAATAAATAATGTAAGATTTTGACTATTACCTCCCTCAATTTTCTTATTATTATCAAGAACCCTAATTAACCCAAGTGCTGGTACTGGATGAACTGTATATCCTCCTTTATCCTTATATACATTTCATGCCTCACCTTCCGTTGATTTAGCAATTTTTTCACTTCATTTATCAGGAATTTCATCAATTATTGGATCAATAAATTTTATTGTTACAATCTTAATAATAAAAAATTTTTCTTTAAATTATAGACAAATACCATTATTTTCATGATCAGTTTTAATTACTACAATTTTACTTTTATTATCATTACCAATTTTAGCTGGAGCAATTACTATACTCCTATTTGATCGAAATTTAAATACCTCATTCTTTGACCCAATAGGAGGAGGAGATCCAATTTTATATCAACATTTATTT&quot;
 </code></pre>
 
 <p>You can optionally get back the <code>httr</code> response object</p>
 
-<pre><code class="r">res &lt;- bold_seq(taxon=&#39;Coelioxys&#39;, response=TRUE)
+<pre><code class="r">res &lt;- bold_seq(taxon = &#39;Coelioxys&#39;, response = TRUE)
 res$headers
 </code></pre>
 
 <pre><code>## $date
-## [1] &quot;Wed, 06 Aug 2014 22:14:55 GMT&quot;
+## [1] &quot;Fri, 17 Apr 2015 19:12:26 GMT&quot;
 ## 
 ## $server
 ## [1] &quot;Apache/2.2.15 (Red Hat)&quot;
@@ -376,25 +384,25 @@ res$headers
 
 <p>And you can search by researcher name</p>
 
-<pre><code class="r">bold_seq(researchers=&#39;Thibaud Decaens&#39;)[[1]]
+<pre><code class="r">bold_seq(researchers = &#39;Thibaud Decaens&#39;)[[1]]
 </code></pre>
 
 <pre><code>## $id
-## [1] &quot;AMAZ039-09&quot;
+## [1] &quot;BGABB1142-14&quot;
 ## 
 ## $name
-## [1] &quot;Automeris liberia&quot;
+## [1] &quot;Coleoptera&quot;
 ## 
 ## $gene
-## [1] &quot;AMAZ039-09&quot;
+## [1] &quot;BGABB1142-14&quot;
 ## 
 ## $sequence
-## [1] &quot;AACTTTATACTTTATTTTTGGAATTTGAGCAGGAATAGTAGGAACTTCTTTAAGATTGCTAATTCGTGCTGAATTAGGTACCCCCAGATCTTTAATTGGAGATGACCAAATTTATAATACTATTGTCACAGCCCATGCCTTCATTATAATTTTTTTTATAGTTATACCTATTATAATTGGAGGATTTGGAAATTGACTAGTTCCTTTAATATTAGGAGCCCCAGATATAGCCTTCCCCCGAATAAATAATATAAGATTTTGACTACTCCCCCCCTCTTTAACTCTTTTAATTTCAAGAAGAATTGTAGAAAATGGTGCCGGTACCGGCTGAACCGTTTACCCCCCTCTTTCTTCTAATATTGCTCACGGAGGATCTTCAGTTGATTTAGCTATTTTTTCCTTACATTTAGCTGGAATTTCCTCAATCTTAGGAGCTATTAATTTTATTACAACAATTATTAATATACGTTTAAATAATATATCTTTTGATCAAATACCTCTATTTGTTTGAGCTGTTGGAATTACAGCATTTTTACTTCTTCTTTCATTACCTGTTTTAGCTGGAGCTATTACTATACTATTAACAGATCGTAATTTAAATACCTCTTTTTTTGACCCTGCTGGAGGGGGAGACCCTATCTTATATCAACATTTATTT&quot;
+## [1] &quot;TTCTTATTTGGTGCTTGATCCGCAATAGTTGGAACTTCTCTTAGATTATTAATTCGATCTGAATTAGGATCCCCAGGATCATTAATTGGTGATGATCAAATTTATAATGTAATTGTTACAGCTCATGCTTTTATTATAATTTTTTTTATAGTAATACCAATTATAATTGGAGGATTTGGAAATTGATTAGTTCCTTTAATATTAGGAGCCCCTGATATAGCTTTCCCACGAATAAACAATATAAGATTTTGACTTCTTCCTCCTGCTCTCAGTTTATTAATTATAAGAAGAATTGTAGAAAGAGGGGCTGGAACAGGTTGAACTGTTTATCCTCCTCTATCAGCTAATTTAGCTCATAGAGGTTCTTCTGTAGATTTAGCTATTTTTAGCCTACATTTAGCAGGAGTTTCATCAATCCTTGGAGCTGTAAATTTTATTACTACCGTAATTAATATACGTCCTCAAGGTATAACCTTTGATCGTTTATCCTTATTTATTTGAGCAGTAAAAATTACAGCTATTCTTCTATTACTATCTCTTCCTGTTTTAGCAGGA---------------------------------------------------------------------------&quot;
 </code></pre>
 
 <p>by taxon IDs</p>
 
-<pre><code class="r">bold_seq(ids=c(&#39;ACRJP618-11&#39;,&#39;ACRJP619-11&#39;))
+<pre><code class="r">bold_seq(ids = c(&#39;ACRJP618-11&#39;, &#39;ACRJP619-11&#39;))
 </code></pre>
 
 <pre><code>## [[1]]
@@ -427,38 +435,38 @@ res$headers
 
 <p>by container (containers include project codes and dataset codes)</p>
 
-<pre><code class="r">bold_seq(container=&#39;ACRJP&#39;)[[1]]
+<pre><code class="r">bold_seq(container = &#39;ACRJP&#39;)[[1]]
 </code></pre>
 
 <pre><code>## $id
-## [1] &quot;ACRJP021-09&quot;
+## [1] &quot;ACRJP167-09&quot;
 ## 
 ## $name
 ## [1] &quot;Lepidoptera&quot;
 ## 
 ## $gene
-## [1] &quot;ACRJP021-09&quot;
+## [1] &quot;ACRJP167-09&quot;
 ## 
 ## $sequence
-## [1] &quot;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------TAAGATTTTGACTCCTCCCCCCCTCCTTAATTTTACTAATTTCTAGTAGTATTGTAGAAAATGGAACTGGTACTGGATGAACAGTTTATCCCCCTTTATCCTCTAACACAGCTCATAGTGGAGCCTCAGTTGATTTAACTATTTTTTCCCTTCATTTAGCAGGCATTTCTTCTATTTTAGGAGCTATTAATTTCATTACTACAATTATTAATATACGATTAAATAGTCTATCATTTGATAAAATACCTTTATTTGTTTGGGCAGTAGGAATTACAGCCCTATTATTACTTTTATCTTTACCAGTCTTAGCTGGAGCTATTACTATATTATTAACTGATCGTAATTTAAACACTTCATTTTTTGACCCTGCAGGAGGTGGTGACCCTATTCTCTACCAACATTTATTT&quot;
+## [1] &quot;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------TAAGTTTTTGACTTTTACCCCCCTCTTTAATTTTATTAATCTCTAGAAGAATTGTCGAAAATGGAGCAGGTACAGGATGAACAGTATATCCCCCACTTTCATCTAATATTGCTCATGGTGGTTCTTCTGTTGATTTAGCTATTTTTTCTCTTCATTTAGCCGGAATTTCCTCTATTTTAGGAGCAATTAATTTTATTACTACTATTATTAATATACGAGTTAATAATTTATCATTTGATCAAATACCTTTATTTGTTTGAGCTGTTGGTATTACTGCCTTATTACTTCTTCTTTCTTTACCAGTTTTAGCTGGAGCCATTACTATACTTTTAACAGATCGAAATCTTAATACTTCATTTTTTGACCCAGCTGGAGGAGGAGACCCAATTTTATACCAACATTTATTT&quot;
 </code></pre>
 
 <p>by bin (a bin is a <em>Barcode Index Number</em>)</p>
 
-<pre><code class="r">bold_seq(bin=&#39;BOLD:AAA5125&#39;)[[1]]
+<pre><code class="r">bold_seq(bin = &#39;BOLD:AAA5125&#39;)[[1]]
 </code></pre>
 
 <pre><code>## $id
-## [1] &quot;BLPAB406-06&quot;
+## [1] &quot;ASARD6776-12&quot;
 ## 
 ## $name
-## [1] &quot;Eacles ormondei&quot;
+## [1] &quot;Lepidoptera&quot;
 ## 
 ## $gene
-## [1] &quot;BLPAB406-06&quot;
+## [1] &quot;ASARD6776-12&quot;
 ## 
 ## $sequence
-## [1] &quot;AACTTTATATTTTATTTTTGGAATTTGAGCAGGTATAGTAGGAACTTCTTTAAGATTACTAATTCGAGCAGAATTAGGTACCCCCGGATCTTTAATTGGAGATGACCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATACCTATTATAATTGGAGGATTTGGAAATTGATTAGTACCCCTAATACTAGGAGCTCCTGATATAGCTTTCCCCCGAATAAATAATATAAGATTTTGACTATTACCCCCATCTTTAACTCTTTTAATTTCTAGAAGAATTGTCGAAAATGGAGCTGGAACTGGATGAACAGTTTATCCCCCCCTTTCATCTAATATTGCTCATGGAGGCTCTTCTGTTGATTTAGCTATTTTTTCCCTTCATCTAGCTGGAATCTCATCAATTTTAGGAGCTATTAATTTTATCACAACAATCATTAATATACGACTAAATAATATAATATTTGACCAAATACCTTTATTTGTATGAGCTGTTGGTATTACAGCATTTCTTTTATTGTTATCTTTACCTGTACTAGCTGGAGCTATTACTATACTTTTAACAGATCGAAACTTAAATACATCATTTTTTGACCCAGCAGGAGGAGGAGATCCTATTCTCTATCAACATTTATTT&quot;
+## [1] &quot;AACTTTATATTTTATTTTTGGAATTTGAGCAGGTATAGTAGGAACTTCTTTAAGATTACTAATTCGAGCAGAATTAGGTACCCCCGGATCTTTAATTGGAGATGACCAAATTTATAATACCATTGTAACAGCTCATGCTTTTATTATAATTTTTTTTATAGTTATACCTATTATAATTGGAGGATTTGGAAATTGATTAGTACCCCTAATACTAGGAGCTCCTGATATAGCTTTCCCCCGAATAAATAATATAAGATTTTGACTATTACCCCCATCTTTAACCCTTTTAATTTCTAGAAGAATTGTCGAAAATGGAGCTGGAACTGGATGAACAGTTTATCCCCCCCTTTCATCTAATATTGCTCATGGAGGCTCTTCTGTTGATTTAGCTATTTTTTCCCTTCATCTAGCTGGAATCTCATCAATTTTAGGAGCTATTAATTTTATCACAACAATCATTAATATACGACTAAATAATATAATATTTGACCAAATACCTTTATTTGTATGAGCTGTTGGTATTACAGCATTTCTTTTATTGTTATCTTTACCTGTACTAGCTGGAGCTATTACTATACTTTTAACAGATCGAAACTTAAATACATCATTTTTTGACCCAGCAGGAGGAGGAGATCCTATTCTCTATCAACATTTATTT&quot;
 </code></pre>
 
 <p>And there are more ways to query, check out the docs for <code>?bold_seq</code>.</p>
@@ -467,29 +475,29 @@ res$headers
 
 <p>The BOLD specimen API doesn&#39;t give back sequences, only specimen data. By default you download <code>tsv</code> format data, which is given back to you as a <code>data.frame</code></p>
 
-<pre><code class="r">res &lt;- bold_specimens(taxon=&#39;Osmia&#39;)
+<pre><code class="r">res &lt;- bold_specimens(taxon = &#39;Osmia&#39;)
 head(res[,1:8])
 </code></pre>
 
-<pre><code>##     processid sampleid recordID catalognum fieldnum
-## 1 GBAH3890-08 EU726617   856421   EU726617         
-## 2 GBAH3894-08 EU726613   856425   EU726613         
-## 3 GBAH3898-08 EU726609   856429   EU726609         
-## 4 GBAH3899-08 EU726608   856430   EU726608         
-## 5 GBAH3900-08 EU726607   856431   EU726607         
-## 6 GBAH3902-08 EU726605   856433   EU726605         
-##        institution_storing      bin_uri phylum_taxID
-## 1 Mined from GenBank, NCBI BOLD:AAA4494           20
-## 2 Mined from GenBank, NCBI BOLD:AAA4494           20
-## 3 Mined from GenBank, NCBI BOLD:AAA4494           20
-## 4 Mined from GenBank, NCBI BOLD:AAA4494           20
-## 5 Mined from GenBank, NCBI BOLD:AAA4494           20
-## 6 Mined from GenBank, NCBI BOLD:AAA4494           20
+<pre><code>##      processid         sampleid recordID       catalognum         fieldnum
+## 1  BBHYL362-10     10BBCHY-3316  1769805     10BBCHY-3316   L#PC2010EI-002
+## 2 BCHYM1499-13 BC ZSM HYM 19359  4005348 BC ZSM HYM 19359 BC ZSM HYM 19359
+## 3  BCHYM411-13 BC ZSM HYM 18271  3896352 BC ZSM HYM 18271 BC ZSM HYM 18271
+## 4  BCHYM413-13 BC ZSM HYM 18273  3896354 BC ZSM HYM 18273 BC ZSM HYM 18273
+## 5  FBAPB700-09 BC ZSM HYM 02175  1289061 BC ZSM HYM 02175 BC ZSM HYM 02175
+## 6  FBAPC355-10 BC ZSM HYM 05960  1709621 BC ZSM HYM 05960 BC ZSM HYM 05960
+##                    institution_storing      bin_uri phylum_taxID
+## 1    Biodiversity Institute of Ontario BOLD:AAB8874           20
+## 2 Bavarian State Collection of Zoology BOLD:AAD6282           20
+## 3 Bavarian State Collection of Zoology BOLD:AAP2416           20
+## 4 Bavarian State Collection of Zoology BOLD:AAP2416           20
+## 5 Bavarian State Collection of Zoology BOLD:AAI1853           20
+## 6 Bavarian State Collection of Zoology BOLD:AAK6070           20
 </code></pre>
 
 <p>You can optionally get back the data in <code>XML</code> format</p>
 
-<pre><code class="r">bold_specimens(taxon=&#39;Osmia&#39;, format=&#39;xml&#39;)
+<pre><code class="r">bold_specimens(taxon = &#39;Osmia&#39;, format = &#39;xml&#39;)
 </code></pre>
 
 <pre><code class="r">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -509,7 +517,7 @@ head(res[,1:8])
 
 <p>You can choose to get the <code>httr</code> response object back if you&#39;d rather work with the raw data returned from the BOLD API.</p>
 
-<pre><code class="r">res &lt;- bold_specimens(taxon=&#39;Osmia&#39;, format=&#39;xml&#39;, response=TRUE)
+<pre><code class="r">res &lt;- bold_specimens(taxon = &#39;Osmia&#39;, format = &#39;xml&#39;, response = TRUE)
 res$url
 </code></pre>
 
@@ -526,7 +534,7 @@ res$url
 </code></pre>
 
 <pre><code>## $date
-## [1] &quot;Wed, 06 Aug 2014 22:15:33 GMT&quot;
+## [1] &quot;Fri, 17 Apr 2015 19:14:09 GMT&quot;
 ## 
 ## $server
 ## [1] &quot;Apache/2.2.15 (Red Hat)&quot;
@@ -554,15 +562,15 @@ res$url
 
 <p>The specimen/sequence combined API gives back specimen and sequence data. Like the specimen API, this one gives by default <code>tsv</code> format data, which is given back to you as a <code>data.frame</code>. Here, we&#39;re setting <code>sepfasta=TRUE</code> so that the sequence data is given back as a list, and taken out of the <code>data.frame</code> returned so the <code>data.frame</code> is more manageable.</p>
 
-<pre><code class="r">res &lt;- bold_seqspec(taxon=&#39;Osmia&#39;, sepfasta=TRUE)
+<pre><code class="r">res &lt;- bold_seqspec(taxon = &#39;Osmia&#39;, sepfasta = TRUE)
 res$fasta[1:2]
 </code></pre>
 
-<pre><code>## $`GBAH3890-08`
-## [1] &quot;---------------------------------------ATTCTATATATAATTTTTGCTTTATGATCTGGAATAATTGGATCAGCAATA---AGAATTATTATTCGAATAGAATTAAGTATCCCAGGATCATGAATTTCTAAT---GATCAAATTTATAATTCTTTAGTAACTGCTCATGCCTTTTTAATAATTTTTTTTCTTGTCATACCATTTTTAATTGGAGGATTTGGAAATTGATTAATTCCATTAATA---TTAGGAATTCCAGATATAGCTTTTCCTCGAATAAATAATATTAGATTTTGACTTTTACCACCATCCTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGACCTGGAACAGGATGAACAATTTATCCACCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAATTGATTTA---GCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAACATTTCCTTAAAATATATTCAATTATCCTTATTTCCTTGATCTGTATTTATTACTACTATTCTTTTACTTTTTTCTTTACCTGTATTAGCTGGA---GCAATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCAACAGGAGGTGGAGATCCAATTCTTTATCAACATTTA------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;
+<pre><code>## $`BBHYL362-10`
+## [1] &quot;AATTTTATATATAATTTTTGCTATATGATCAGGAATAATTGGTTCAGCAATAAGAATTATTATTCGAATAGAATTAAGAATTCCTGGTTCATGAATTTCAAATGATCAAACTTATAATTCTTTAGTTACTGCTCATGCTTTTTTAATAATTTTTTTTTTAGTTATACCATTCTTAATTGGGGGATTTGGAAATTGATTAATTCCTTTAATATTAGGAATTCCAGATATAGCATTTCCACGAATAAATAATATTAGATTTTGACTTTTACCTCCTTCTTTAATACTTTTATTATTAAGAAATTTTATAAATCCTAGTCCAGGAACTGGATGAACTGTTTATCCACCTTTATCTTCTCATTTATTTCATTCTTCTCCTTCAGTTGATATAGCTATTTTTTCTTTACATATTTCTGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAATATTTCTTTAAAACATATTCAATTACCTTTATTTCCTTGATCTGTCTTTATTACTACTATTTTATTACTTTTTTCTTTACCTGTTTTAGCAGGTGCAATTACTATATTATTATTTGATCGAAATTTTAATACTTCATTTTTTGATCCTACAGGAGGAGGAGATCCTATTCTTTATCAACATTTATTT&quot;
 ## 
-## $`GBAH3894-08`
-## [1] &quot;---------------------------------------ATTCTATATATAATTTTTGCTTTATGATCTGGAATAATTGGATCAGCAATA---AGAATTATTATTCGAATAGAATTAAGTATCCCAGGATCATGAATTTCTAAT---GATCAAATTTATAATTCTTTAGTAACTGCTCATGCCTTTTTAATAATTTTTTTTCTTGTCATACCATTTTTAATTGGAGGATTTGGAAATTGATTAATTCCATTAATA---TTAGGAATTCCAGATATAGCTTTTCCTCGAATAAATAATATTAGATTTTGACTTTTACCACCATCCTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGACCTGGAACAGGATGAACAATTTATCCACCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAATTGATTTA---GCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAACATTTCCTTAAAATATATTCAATTATCCTTATTTCCTTGATCTGTATTTATTACTACTATTCTTTTACTTTTTTCTTTACCTGTATTAGCTGGA---GCAATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCAACAGGAGGTGGAGATCCAATTCTTTATCAACATTTA------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------&quot;
+## $`BCHYM1499-13`
+## [1] &quot;AATTCTTTACATAATTTTTGCTTTATGATCTGGAATAATTGGGTCAGCAATAAGAATTATTATTCGAATAGAATTAAGTATCCCAGGTTCATGAATTACTAATGATCAAATTTATAATTCTTTAGTAACTGCACATGCTTTTTTAATAATTTTTTTTCTTGTGATACCATTTTTAATTGGAGGATTTGGAAATTGATTAATTCCTTTAATATTAGGAATTCCAGATATAGCTTTCCCACGAATAAACAATATTAGATTTTGATTATTACCGCCATCTTTAATATTATTACTTTTAAGAAATTTTTTAAATCCAAGTCCTGGAACAGGATGAACAGTTTATCCCCCTTTATCATCAAATTTATTTCATTCTTCTCCTTCAGTTGATTTAGCAATTTTTTCTTTACATATTTCAGGTTTATCTTCTATTATAGGTTCATTAAATTTTATTGTTACAATTATTATAATAAAAAATATTTCTTTAAAATATATTCAATTGCCTTTATTTCCTTGATCTGTATTTATTACTACTATTCTTTTATTATTTTCTTTACCTGTGTTAGCTGGAGCTATTACTATATTATTATTTGATCGAAATTTTAATACATCTTTTTTTGATCCTACAGGAGGAGGAGATCCAATTCTTTATCAACATTTATTT&quot;
 </code></pre>
 
 <p>Or you can index to a specific sequence like</p>
@@ -578,13 +586,17 @@ res$fasta[1:2]
 
 <p>This function downloads files to your machine - it does not load them into your R session - but prints out where the files are for your information.</p>
 
-<pre><code class="r">bold_trace(taxon=&#39;Osmia&#39;, quiet=TRUE)
+<pre><code class="r">bold_trace(taxon = &#39;Osmia&#39;, quiet = TRUE)
 </code></pre>
 
-<pre><code>## Trace file extracted with files: 
+<pre><code>## 
+## &lt;bold trace files&gt; 
 ## 
-## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/HDBNS084-03~R_1.ab1
-## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/TRACE_FILE_INFO.txt
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/a12.Lep-R.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/a12.MLep-F.ab1
+## /Users/sacmac/github/ropensci/bold/inst/vign/bold_trace_files/ASGCB253-13[LepF1,LepR1]_F.ab1
+
+... cutoff
 </code></pre>
 
 </body>

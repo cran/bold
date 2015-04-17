@@ -3,7 +3,7 @@
 #' Get sequences for a taxonomic name, id, bin, container, institution, researcher, geographic
 #' place, or gene.
 #'
-#' @import httr stringr
+#' @importFrom stringr str_replace_all str_replace str_split
 #' @export
 #' @template args
 #' @template otherargs
@@ -20,7 +20,6 @@
 #' bold_seq(ids=c('ACRJP618-11','ACRJP619-11'))
 #' bold_seq(bin='BOLD:AAA5125')
 #' bold_seq(container='ACRJP')
-#' bold_seq(institutions='Biodiversity Institute of Ontario')
 #' bold_seq(researchers='Thibaud Decaens')
 #' bold_seq(geo='Ireland')
 #' bold_seq(geo=c('Ireland','Denmark'))
@@ -37,26 +36,15 @@
 #' bold_seq(taxon='Coelioxys', config=verbose())[1:2]
 #' bold_seqspec(taxon='Coelioxys', config=timeout(0.1))
 #' }
-#' 
-#' @examples \donttest{
-#' bold_seq(marker='COI-5P')
-#' bold_seq(marker=c('rbcL','matK'))
-#' }
 
 bold_seq <- function(taxon = NULL, ids = NULL, bin = NULL, container = NULL, institutions = NULL,
-  researchers = NULL, geo = NULL, marker = NULL, response=FALSE, ...)
-{
-  url <- 'http://www.boldsystems.org/index.php/API_Public/sequence'
-
-  args <- bold_compact(list(taxon=pipeornull(taxon), geo=pipeornull(geo), ids=pipeornull(ids),
+  researchers = NULL, geo = NULL, marker = NULL, response=FALSE, ...) {
+  args <- bc(list(taxon=pipeornull(taxon), geo=pipeornull(geo), ids=pipeornull(ids),
       bin=pipeornull(bin), container=pipeornull(container), institutions=pipeornull(institutions),
       researchers=pipeornull(researchers), marker=pipeornull(marker)))
-  check_args_given_nonempty(args, c('taxon','ids','bin','container','institutions','researchers','geo','marker'))
-  out <- GET(url, query=args, ...)
-  # check HTTP status code
-  stop_for_status(out)
-  # check mime-type (Even though BOLD folks didn't specify correctly)
-  assert_that(out$headers$`content-type`=='application/x-download')
+  check_args_given_nonempty(args, c('taxon','ids','bin','container','institutions','researchers',
+                                    'geo','marker'))
+  out <- b_GET(paste0(bbase(), 'API_Public/sequence'), args, ...)
   if(response){ out } else {
     tt <- content(out, as = "text")
     res <- strsplit(tt, ">")[[1]][-1]
