@@ -25,7 +25,9 @@
 #' a data frame unwieldy).
 #' 
 #' @importFrom methods is
+#' @importFrom stats setNames
 #' @importFrom utils read.delim untar
+#' @importFrom xml2 read_xml xml_find_all xml_find_one xml_text xml_name as_list
 #' @docType package
 #' @name bold-package
 #' @aliases bold

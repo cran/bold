@@ -48,20 +48,25 @@
 
 bold_identify <- function(sequences = NULL, db = 'COX1', response=FALSE, ...) {
   url <- 'http://boldsystems.org/index.php/Ids_xml'
-
+  
   foo <- function(a, b){
-    args <- bc(list(sequence=a, db=b))
-    out <- GET(url, query=args, ...)
+    args <- bc(list(sequence = a, db = b))
+    out <- GET(url, query = args, ...)
     stop_for_status(out)
-    assert_that(out$headers$`content-type`=='text/xml')
-    if(response){ out } else {
-      tt <- content(out, as = "text")
-      xml <- xmlParse(tt)
-      nodes <- getNodeSet(xml, "//match")
+    assert_that(out$headers$`content-type` == 'text/xml')
+    if (response) { 
+      out 
+    } else {
+      tt <- content(out, "text", encoding = "UTF-8")
+      xml <- xml2::read_xml(tt)
+      nodes <- xml2::xml_find_all(xml, "//match")
       toget <- c("ID","sequencedescription","database","citation","taxonomicidentification","similarity")
       outlist <- lapply(nodes, function(x){
-        tmp2 <- sapply(toget, function(y) xpathSApply(x, y, xml_value_name), USE.NAMES = FALSE)
-        spectmp <- xpathSApply(x, "specimen", xmlToList, addAttributes = TRUE, simplify = FALSE)[[1]]
+        tmp2 <- vapply(toget, function(y) {
+          tmp <- xml2::xml_find_one(x, y)
+          setNames(xml2::xml_text(tmp), xml2::xml_name(tmp))
+        }, "")
+        spectmp <- xml2::as_list(xml2::xml_find_one(x, "specimen"))
         spectmp <- unnest(spectmp)
         names(spectmp) <- c('specimen_url','specimen_country','specimen_lat','specimen_lon')
         spectmp[sapply(spectmp, is.null)] <- NA
@@ -70,13 +75,7 @@ bold_identify <- function(sequences = NULL, db = 'COX1', response=FALSE, ...) {
       do.call(rbind.fill, outlist)
     }
   }
-  lapply(sequences, foo, b=db)
-}
-
-xml_value_name <- function(x){
-  tmp <- xmlValue(x)
-  names(tmp) <- xmlName(x)
-  tmp
+  lapply(sequences, foo, b = db)
 }
 
 unnest <- function(x){
