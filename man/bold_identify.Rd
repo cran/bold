@@ -10,13 +10,16 @@ bold_identify(sequences, db = "COX1", response = FALSE, ...)
 \item{sequences}{(character) Returns all records containing matching marker 
 codes. Required.}
 
-\item{db}{(character) The database to match against, one of COX1, COX1_SPECIES,
-COX1_SPECIES_PUBLIC, OR COX1_L604bp. See Details for more information.}
+\item{db}{(character) The database to match against, one of COX1, 
+COX1_SPECIES, COX1_SPECIES_PUBLIC, OR COX1_L604bp. See Details for 
+more information.}
 
-\item{response}{(logical) Note that response is the object that returns from the
-Curl call, useful for debugging, and getting detailed info on the API call.}
+\item{response}{(logical) Note that response is the object that returns 
+from the Curl call, useful for debugging, and getting detailed info on 
+the API call.}
 
-\item{...}{Further args passed on to httr::GET, main purpose being curl debugging}
+\item{...}{Further args passed on to \code{\link[httr]{GET}}, main purpose 
+being curl debugging}
 }
 \value{
 A data.frame with details for each specimen matched.
@@ -24,19 +27,19 @@ A data.frame with details for each specimen matched.
 \description{
 Search for matches to sequences against the BOLD COI database.
 }
-\details{
-Detailed description of options for the db parmeter:
+\section{db parmeter options}{
 
 \itemize{
- \item COX1 Every COI barcode record with a species level identification and
- a minimum sequence length of 500bp. This includes many species represented by
- only one or two specimens as well as  all species with interim taxonomy.
- \item COX1_SPECIES Every COI barcode record on BOLD with a minimum sequence
+ \item COX1 Every COI barcode record on BOLD with a minimum sequence
  length of 500bp (warning: unvalidated library and includes records without
  species level identification). This includes many species represented by
  only one or two specimens as well as all species with interim taxonomy. This
  search only returns a list of the nearest matches and does not provide a
  probability of placement to a taxon.
+ \item COX1_SPECIES Every COI barcode record with a species level 
+ identification and a minimum sequence length of 500bp. This includes 
+ many species represented by only one or two specimens as well as  all 
+ species with interim taxonomy.
  \item COX1_SPECIES_PUBLIC All published COI records from BOLD and GenBank
  with a minimum sequence length of 500bp. This library is a collection of
  records from the published projects section of BOLD.
@@ -46,23 +49,25 @@ Detailed description of options for the db parmeter:
  with short reads from the barcode region of COI.
 }
 }
+
+\section{Named outputs}{
+
+To maintain names on the output list of data make sure to pass in a 
+named list to the \code{sequences} parameter. You can for example, 
+take a list of sequences, and use \code{\link{setNames}} to set names.
+}
 \examples{
 \dontrun{
 seq <- sequences$seq1
-head(bold_identify(sequences=seq)[[1]])
+res <- bold_identify(sequences=seq)
+head(res[[1]])
 head(bold_identify(sequences=seq, db='COX1_SPECIES')[[1]])
-bold_identify(sequences=seq, response=TRUE)
-
-# Multiple sequences
-out <- bold_identify(sequences=c(sequences$seq2, sequences$seq3), db='COX1')
-lapply(out, head)
-
-# curl debugging
-library('httr')
-bold_identify(sequences=seq, response=TRUE, config=verbose())[[1]]
 }
 }
 \references{
 \url{http://www.boldsystems.org/index.php/resources/api?type=idengine}
+}
+\seealso{
+\code{\link{bold_identify_parents}}
 }
 

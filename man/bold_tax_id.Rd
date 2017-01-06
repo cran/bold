@@ -10,11 +10,12 @@ bold_tax_id(id, dataTypes = "basic", includeTree = FALSE,
 \arguments{
 \item{id}{(integer) One or more BOLD taxonomic identifiers. required.}
 
-\item{dataTypes}{(character) Specifies the datatypes that will be returned. 'all' returns all
-data. 'basic' returns basic taxon information. 'images' returns specimen images.}
+\item{dataTypes}{(character) Specifies the datatypes that will be 
+returned. 'all' returns all data. 'basic' returns basic taxon information. 
+'images' returns specimen images.}
 
-\item{includeTree}{(logical) If TRUE (default: FALSE), returns a list containing information
-for parent taxa as well as the specified taxon.}
+\item{includeTree}{(logical) If TRUE (default: FALSE), returns a list 
+containing information for parent taxa as well as the specified taxon.}
 
 \item{response}{(logical) Note that response is the object that returns from the Curl call,
 useful for debugging, and getting detailed info on the API call.}
@@ -57,7 +58,7 @@ bold_tax_id(id=88899, config=verbose())
 }
 }
 \references{
-\url{http://boldsystems.org/index.php/resources/api?type=taxonomy#idParameters}
+\url{http://boldsystems.org/index.php/resources/api?type=taxonomy}
 }
 \seealso{
 \code{bold_tax_name}
