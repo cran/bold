@@ -17,10 +17,12 @@ returned. 'all' returns all data. 'basic' returns basic taxon information.
 \item{includeTree}{(logical) If TRUE (default: FALSE), returns a list 
 containing information for parent taxa as well as the specified taxon.}
 
-\item{response}{(logical) Note that response is the object that returns from the Curl call,
-useful for debugging, and getting detailed info on the API call.}
+\item{response}{(logical) Note that response is the object that returns 
+from the Curl call, useful for debugging, and getting detailed info on 
+the API call.}
 
-\item{...}{Further args passed on to httr::GET, main purpose being curl debugging}
+\item{...}{Further args passed on to \code{\link[crul]{HttpClient}}, main 
+purpose being curl debugging}
 }
 \description{
 Search BOLD for taxonomy data by BOLD ID.
@@ -39,8 +41,6 @@ bold_tax_id(id=88899, dataTypes = "images")
 bold_tax_id(id=88899, dataTypes = "geo")
 bold_tax_id(id=88899, dataTypes = "sequencinglabs")
 bold_tax_id(id=88899, dataTypes = "depository")
-bold_tax_id(id=88899, dataTypes = "thirdparty")
-bold_tax_id(id=88899, dataTypes = "all")
 bold_tax_id(id=c(88899,125295), dataTypes = "geo")
 bold_tax_id(id=c(88899,125295), dataTypes = "images")
 
@@ -48,19 +48,17 @@ bold_tax_id(id=c(88899,125295), dataTypes = "images")
 bold_tax_id(id = NA)
 bold_tax_id(id = c(88899,125295,NA))
 
-## get httr response object only
+## get http response object only
 bold_tax_id(id=88899, response=TRUE)
 bold_tax_id(id=c(88899,125295), response=TRUE)
 
 ## curl debugging
-library('httr')
-bold_tax_id(id=88899, config=verbose())
+bold_tax_id(id=88899, verbose = TRUE)
 }
 }
 \references{
-\url{http://boldsystems.org/index.php/resources/api?type=taxonomy}
+\url{http://v4.boldsystems.org/index.php/resources/api?type=taxonomy}
 }
 \seealso{
 \code{bold_tax_name}
 }
-

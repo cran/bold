@@ -10,8 +10,8 @@
 #' @param response (logical) Note that response is the object that returns 
 #' from the Curl call, useful for debugging, and getting detailed info on 
 #' the API call.
-#' @param ... Further args passed on to \code{\link[httr]{GET}}, main purpose 
-#' being curl debugging
+#' @param ... Further args passed on to \code{\link[crul]{HttpClient}}, main 
+#' purpose being curl debugging
 #'
 #' @section db parmeter options:
 #' \itemize{
@@ -39,9 +39,10 @@
 #' named list to the \code{sequences} parameter. You can for example, 
 #' take a list of sequences, and use \code{\link{setNames}} to set names.
 #' 
-#' @return A data.frame with details for each specimen matched.
+#' @return A data.frame with details for each specimen matched. if a 
+#' failed request, returns \code{NULL}
 #' @references 
-#' \url{http://www.boldsystems.org/index.php/resources/api?type=idengine}
+#' \url{http://v4.boldsystems.org/index.php/resources/api?type=idengine}
 #' @seealso \code{\link{bold_identify_parents}}
 #' @examples \dontrun{
 #' seq <- sequences$seq1
@@ -51,17 +52,17 @@
 #' }
 
 bold_identify <- function(sequences, db = 'COX1', response=FALSE, ...) {
-  url <- 'http://boldsystems.org/index.php/Ids_xml'
-  
   foo <- function(a, b){
     args <- bc(list(sequence = a, db = b))
-    out <- GET(url, query = args, ...)
-    stop_for_status(out)
-    assert_that(out$headers$`content-type` == 'text/xml')
+    cli <- crul::HttpClient$new(url = paste0(bbase(), 'Ids_xml'))
+    out <- cli$get(query = args, ...)
+    out$raise_for_status()
+    stopifnot(out$headers$`content-type` == 'text/xml')
+
     if (response) { 
       out 
     } else {
-      tt <- content(out, "text", encoding = "UTF-8")
+      tt <- out$parse('UTF-8')
       xml <- xml2::read_xml(tt)
       nodes <- xml2::xml_find_all(xml, "//match")
       toget <- c("ID","sequencedescription","database",
@@ -69,7 +70,7 @@ bold_identify <- function(sequences, db = 'COX1', response=FALSE, ...) {
       outlist <- lapply(nodes, function(x){
         tmp2 <- vapply(toget, function(y) {
           tmp <- xml2::xml_find_first(x, y)
-          setNames(xml2::xml_text(tmp), xml2::xml_name(tmp))
+          stats::setNames(xml2::xml_text(tmp), xml2::xml_name(tmp))
         }, "")
         spectmp <- xml2::as_list(xml2::xml_find_first(x, "specimen"))
         spectmp <- unnest(spectmp)
@@ -88,6 +89,6 @@ unnest <- function(x){
   if (is.null(names(x))) {
     list(unname(unlist(x)))
   } else {
-    do.call(c, lapply(x, unnest))
+    do.call("c", lapply(x, unnest))
   }
 }

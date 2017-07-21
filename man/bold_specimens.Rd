@@ -9,34 +9,40 @@ bold_specimens(taxon = NULL, ids = NULL, bin = NULL, container = NULL,
   format = "tsv", ...)
 }
 \arguments{
-\item{taxon}{(character) Returns all records containing matching taxa. Taxa includes the ranks of 
-phylum, class, order, family, subfamily, genus, and species.}
+\item{taxon}{(character) Returns all records containing matching taxa. Taxa 
+includes the ranks of  phylum, class, order, family, subfamily, genus, 
+and species.}
 
-\item{ids}{(character) Returns all records containing matching IDs. IDs include Sample IDs, 
-Process IDs, Museum IDs and Field IDs.}
+\item{ids}{(character) Returns all records containing matching IDs. IDs 
+include Sample IDs, Process IDs, Museum IDs and Field IDs.}
 
-\item{bin}{(character) Returns all records contained in matching BINs. A BIN is defined by a 
-Barcode Index Number URI.}
+\item{bin}{(character) Returns all records contained in matching BINs. A 
+BIN is defined by a Barcode Index Number URI.}
 
-\item{container}{(character) Returns all records contained in matching projects or datasets.
-Containers include project codes and dataset codes}
+\item{container}{(character) Returns all records contained in matching 
+projects or datasets. Containers include project codes and dataset codes}
 
-\item{institutions}{(character) Returns all records stored in matching institutions. Institutions 
-are the Specimen Storing Site.}
+\item{institutions}{(character) Returns all records stored in matching 
+institutions. Institutions are the Specimen Storing Site.}
 
-\item{researchers}{(character) Returns all records containing matching researcher names. 
-Researchers include collectors and specimen identifiers.}
+\item{researchers}{(character) Returns all records containing matching 
+researcher names. Researchers include collectors and specimen identifiers.}
 
-\item{geo}{(character) Returns all records collected in matching geographic sites. Geographic 
-sites includes countries and province/states.}
+\item{geo}{(character) Returns all records collected in matching geographic 
+sites. Geographic sites includes countries and province/states.}
 
-\item{response}{(logical) Note that response is the object that returns from the Curl call,
-useful for debugging, and getting detailed info on the API call.}
+\item{response}{(logical) Note that response is the object that returns 
+from the Curl call, useful for debugging, and getting detailed info on 
+the API call.}
 
-\item{format}{(character) One of xml or tsv (default). tsv format gives 
-back a data.frame object. xml gives back parsed xml as a}
+\item{format}{(character) One of xml, json, tsv (default). tsv format gives 
+back a data.frame object. xml gives back parsed XML as \code{xml_document}
+object. 'json' (JavaScript Object Notation) and 'dwc' (Darwin Core Archive)
+are supported in theory, but the JSON can be malformed, so we don't support
+that here, and the DWC option actually returns TSV.}
 
-\item{...}{Further args passed on to httr::GET, main purpose being curl debugging}
+\item{...}{Further args passed on to \code{\link[crul]{HttpClient}}, main 
+purpose being curl debugging}
 }
 \description{
 Search BOLD for specimens.
@@ -45,11 +51,11 @@ Search BOLD for specimens.
 \dontrun{
 bold_specimens(taxon='Osmia')
 bold_specimens(taxon='Osmia', format='xml')
-# bold_specimens(taxon='Osmia', response=TRUE)
+bold_specimens(taxon='Osmia', response=TRUE)
 res <- bold_specimens(taxon='Osmia', format='xml', response=TRUE)
 res$url
 res$status_code
-res$headers
+res$response_headers
 
 # More than 1 can be given for all search parameters
 bold_specimens(taxon=c('Coelioxys','Osmia'))
@@ -57,13 +63,10 @@ bold_specimens(taxon=c('Coelioxys','Osmia'))
 ## curl debugging
 ### These examples below take a long time, so you can set a timeout so that 
 ### it stops by X sec
-library("httr")
-head(bold_specimens(taxon='Osmia', config=verbose()))
-# head(bold_specimens(geo='Costa Rica', config=timeout(6)))
-# head(bold_specimens(taxon="Formicidae", geo="Canada", config=timeout(6)))
+head(bold_specimens(taxon='Osmia', verbose = TRUE))
+# head(bold_specimens(geo='Costa Rica', timeout_ms = 6))
 }
 }
 \references{
-\url{http://www.boldsystems.org/index.php/resources/api#specimenParameters}
+\url{http://v4.boldsystems.org/index.php/resources/api?type=webservices}
 }
-

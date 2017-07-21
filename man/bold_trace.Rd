@@ -12,38 +12,39 @@ bold_trace(taxon = NULL, ids = NULL, bin = NULL, container = NULL,
 read_trace(x)
 }
 \arguments{
-\item{taxon}{(character) Returns all records containing matching taxa. Taxa includes the ranks of 
-phylum, class, order, family, subfamily, genus, and species.}
+\item{taxon}{(character) Returns all records containing matching taxa. Taxa 
+includes the ranks of  phylum, class, order, family, subfamily, genus, 
+and species.}
 
-\item{ids}{(character) Returns all records containing matching IDs. IDs include Sample IDs, 
-Process IDs, Museum IDs and Field IDs.}
+\item{ids}{(character) Returns all records containing matching IDs. IDs 
+include Sample IDs, Process IDs, Museum IDs and Field IDs.}
 
-\item{bin}{(character) Returns all records contained in matching BINs. A BIN is defined by a 
-Barcode Index Number URI.}
+\item{bin}{(character) Returns all records contained in matching BINs. A 
+BIN is defined by a Barcode Index Number URI.}
 
-\item{container}{(character) Returns all records contained in matching projects or datasets.
-Containers include project codes and dataset codes}
+\item{container}{(character) Returns all records contained in matching 
+projects or datasets. Containers include project codes and dataset codes}
 
-\item{institutions}{(character) Returns all records stored in matching institutions. Institutions 
-are the Specimen Storing Site.}
+\item{institutions}{(character) Returns all records stored in matching 
+institutions. Institutions are the Specimen Storing Site.}
 
-\item{researchers}{(character) Returns all records containing matching researcher names. 
-Researchers include collectors and specimen identifiers.}
+\item{researchers}{(character) Returns all records containing matching 
+researcher names. Researchers include collectors and specimen identifiers.}
 
-\item{geo}{(character) Returns all records collected in matching geographic sites. Geographic 
-sites includes countries and province/states.}
+\item{geo}{(character) Returns all records collected in matching geographic 
+sites. Geographic sites includes countries and province/states.}
 
-\item{marker}{(character) Returns all records containing matching 
+\item{marker}{(character) Returns all records containing matching
 marker codes.}
 
 \item{dest}{(character) A directory to write the files to}
 
 \item{overwrite}{(logical) Overwrite existing directory and file?}
 
-\item{progress}{(logical) Print progress or not. Uses 
-\code{\link[httr]{progress}}.}
+\item{progress}{(logical) Print progress or not. NOT AVAILABLE FOR NOW.
+HOPEFULLY WILL RETURN SOON.}
 
-\item{...}{Futher args passed on to \code{\link[httr]{GET}}.}
+\item{...}{Further args passed on to \code{\link[crul]{HttpClient}}}
 
 \item{x}{Object to print or read.}
 }
@@ -63,7 +64,7 @@ bold_trace(taxon='Bombus', geo='Alaska', dest="~/mytarfiles")
 x <- bold_trace(ids=c('ACRJP618-11','ACRJP619-11'), dest="~/mytarfiles")
 (res <- read_trace(x$ab1[2]))
 
-# The progress dialog is pretty verbose, so quiet=TRUE is a nice touch, 
+# The progress dialog is pretty verbose, so quiet=TRUE is a nice touch,
 # but not by default
 # Beware, this one take a while
 # x <- bold_trace(taxon='Osmia', quiet=TRUE)
@@ -77,6 +78,5 @@ if (requireNamespace("sangerseqR", quietly = TRUE)) {
 }
 }
 \references{
-\url{http://www.boldsystems.org/index.php/resources/api#trace}
+\url{http://v4.boldsystems.org/index.php/resources/api?type=webservices}
 }
-

@@ -1,4 +1,4 @@
-bbase <- function() 'http://www.boldsystems.org/index.php/'
+bbase <- function() 'http://v4.boldsystems.org/index.php/'
 
 bc <- function(x) Filter(Negate(is.null), x)
 
@@ -14,14 +14,8 @@ pipeornull <- function(x){
   if (!is.null(x)) { 
     paste0(x, collapse = "|") 
   } else { 
-    NULL 
+    NULL
   }
-}
-
-make_url <- function(url, args){
-  tmp <- parse_url(url)
-  tmp$query <- args
-  build_url(tmp)
 }
 
 check_args_given_nonempty <- function(arguments, x){
@@ -42,14 +36,14 @@ check_args_given_nonempty <- function(arguments, x){
 }
 
 process_response <- function(x, y, z, w){
-  tt <- rawToChar(content(x, "raw", encoding = "UTF-8"))
+  tt <- rawToChar(x$content)
   out <- if (x$status_code > 202) "stop" else jsonlite::fromJSON(tt)
   if ( length(out) == 0 || identical(out[[1]], list()) || out == "stop" ) {
     data.frame(input = y, stringsAsFactors = FALSE)
   } else {
     if (w %in% c("stats",'images','geo','sequencinglabs','depository')) out <- out[[1]]
     trynames <- tryCatch(as.numeric(names(out)), warning = function(w) w)
-    if (!is(trynames, "simpleWarning")) names(out) <- NULL
+    if (!inherits(trynames, "simpleWarning")) names(out) <- NULL
     if (any(vapply(out, function(x) is.list(x) && length(x) > 0, logical(1)))) {
         out <- lapply(out, function(x) Filter(length, x))
     } else {
@@ -68,14 +62,19 @@ process_response <- function(x, y, z, w){
 }
 
 get_response <- function(args, url, ...){
-  res <- GET(url, query = args, ...)
-  assert_that(res$headers$`content-type` == 'text/html; charset=utf-8')
-  res
+  cli <- crul::HttpClient$new(url = url)
+  out <- cli$get(query = args, ...)
+  out$raise_for_status()
+  stopifnot(out$headers$`content-type` == 'text/html; charset=utf-8')
+  return(out)
 }
 
-b_GET <- function(url, args, ...){  
-  out <- GET(url, query = args, ...)
-  stop_for_status(out)
-  assert_that(out$headers$`content-type` == 'application/x-download')
-  out
+b_GET <- function(url, args, ...){
+  cli <- crul::HttpClient$new(url = url)
+  out <- cli$get(query = args, ...)
+  out$raise_for_status()
+  if (grepl("html", out$response_headers$`content-type`)) {
+    stop(out$parse("UTF-8"))
+  }
+  return(out)
 }

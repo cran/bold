@@ -9,7 +9,7 @@
 #' containing information for parent taxa as well as the specified taxon.
 #' @template otherargs
 #' @references 
-#' \url{http://boldsystems.org/index.php/resources/api?type=taxonomy}
+#' \url{http://v4.boldsystems.org/index.php/resources/api?type=taxonomy}
 #' @seealso \code{bold_tax_name}
 #' @examples \dontrun{
 #' bold_tax_id(id=88899)
@@ -24,8 +24,6 @@
 #' bold_tax_id(id=88899, dataTypes = "geo")
 #' bold_tax_id(id=88899, dataTypes = "sequencinglabs")
 #' bold_tax_id(id=88899, dataTypes = "depository")
-#' bold_tax_id(id=88899, dataTypes = "thirdparty")
-#' bold_tax_id(id=88899, dataTypes = "all")
 #' bold_tax_id(id=c(88899,125295), dataTypes = "geo")
 #' bold_tax_id(id=c(88899,125295), dataTypes = "images")
 #'
@@ -33,22 +31,22 @@
 #' bold_tax_id(id = NA)
 #' bold_tax_id(id = c(88899,125295,NA))
 #'
-#' ## get httr response object only
+#' ## get http response object only
 #' bold_tax_id(id=88899, response=TRUE)
 #' bold_tax_id(id=c(88899,125295), response=TRUE)
 #'
 #' ## curl debugging
-#' library('httr')
-#' bold_tax_id(id=88899, config=verbose())
+#' bold_tax_id(id=88899, verbose = TRUE)
 #' }
 
-bold_tax_id <- function(id, dataTypes='basic', includeTree=FALSE, 
-                        response=FALSE, ...) {
+bold_tax_id <- function(id, dataTypes = 'basic', includeTree = FALSE, 
+                        response = FALSE, ...) {
   
   tmp <- lapply(id, function(x)
-    get_response(args = bc(list(taxId = x, dataTypes = dataTypes, 
-                                includeTree = if (includeTree) TRUE else NULL)),
-                 url = paste0(bbase(), "API_Tax/TaxonData"), ...)
+    get_response(args = bc(list(
+      taxId = x, dataTypes = dataTypes, 
+      includeTree = if (includeTree) 'true' else NULL)),
+      url = paste0(bbase(), "API_Tax/TaxonData"), ...)
   )
   if (response) { 
     tmp 
