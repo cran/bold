@@ -6,7 +6,7 @@
 \usage{
 bold_identify_parents(x, wide = FALSE, taxid = NULL, taxon = NULL,
   tax_rank = NULL, tax_division = NULL, parentid = NULL,
-  parentname = NULL, taxonrep = NULL, specimenrecords = NULL)
+  parentname = NULL, taxonrep = NULL, specimenrecords = NULL, ...)
 }
 \arguments{
 \item{x}{(data.frame/list) list of data.frames - the output from a call to
@@ -37,6 +37,9 @@ below.}
 
 \item{specimenrecords}{(character) A specimenrecords name. Optional. 
 See `Filtering` below.}
+
+\item{...}{Further args passed on to \code{\link[crul]{verb-GET}}, main 
+purpose being curl debugging}
 }
 \value{
 a list of the same length as the input
@@ -93,5 +96,14 @@ head(out[[1]])
 out <- bold_identify_parents(df, wide = TRUE)
 str(out)
 head(out[[1]])
+
+x <- bold_seq(taxon = "Satyrium")
+out <- bold_identify(c(x[[1]]$sequence, x[[13]]$sequence))
+res <- bold_identify_parents(out)
+res
+
+x <- bold_seq(taxon = 'Diplura')
+out <- bold_identify(vapply(x, "[[", "", "sequence")[1:20])
+res <- bold_identify_parents(out)
 }
 }

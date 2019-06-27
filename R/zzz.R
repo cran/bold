@@ -39,16 +39,16 @@ check_args_given_nonempty <- function(arguments, x){
 process_response <- function(x, y, z, w){
   tt <- rawToChar(x$content)
   out <- if (x$status_code > 202) "stop" else jsonlite::fromJSON(tt)
-  if ( length(out) == 0 || identical(out[[1]], list()) || out == "stop" ) {
+  if ( length(out) == 0 || identical(out[[1]], list()) || any(out == "stop") ) {
     data.frame(input = y, stringsAsFactors = FALSE)
   } else {
     if (w %in% c("stats",'images','geo','sequencinglabs','depository')) out <- out[[1]]
     trynames <- tryCatch(as.numeric(names(out)), warning = function(w) w)
     if (!inherits(trynames, "simpleWarning")) names(out) <- NULL
     if (any(vapply(out, function(x) is.list(x) && length(x) > 0, logical(1)))) {
-        out <- lapply(out, function(x) Filter(length, x))
+      out <- lapply(out, function(x) Filter(length, x))
     } else {
-        out <- Filter(length, out)
+      out <- Filter(length, out)
     }
     if (!is.null(names(out))) {
       df <- data.frame(out, stringsAsFactors = FALSE)
@@ -86,4 +86,28 @@ strextract <- function(str, pattern) {
 
 strdrop <- function(str, pattern) {
   regmatches(str, regexpr(pattern, str), invert = TRUE)
+}
+
+assert <- function(x, y) {
+  if (!is.null(x)) {
+    if (!inherits(x, y)) {
+      stop(deparse(substitute(x)), " must be of class ",
+           paste0(y, collapse = ", "), call. = FALSE)
+    }
+  }
+}
+
+assert_param <- function(x, param, y) {
+  if (!is.null(x)) {
+    if (!inherits(x, y)) {
+      stop(param, " must be of class ",
+           paste0(y, collapse = ", "), call. = FALSE)
+    }
+  }
+}
+
+setrbind <- function(x) {
+  (xxx <- data.table::setDF(
+    data.table::rbindlist(x, fill = TRUE, use.names = TRUE))
+  )
 }

@@ -2,10 +2,10 @@ context("bold_identify")
 
 seq <- sequences$seq1
 
-test_that("bold_identify works as expected", {
-  skip_on_cran()
+vcr::use_cassette("bold_identify_works", {
+  test_that("bold_identify works as expected", {
+    skip_on_cran()
 
-  vcr::use_cassette("bold_identify_works", {
     aa <- bold_identify(seq)
     expect_is(aa, 'list')
     expect_is(aa[[1]], 'data.frame')
@@ -13,10 +13,10 @@ test_that("bold_identify works as expected", {
   })
 })
 
-test_that("bold_identify db param works as expected", {
-  skip_on_cran()
+vcr::use_cassette("bold_identify_db_param", {
+  test_that("bold_identify db param works as expected", {
+    skip_on_cran()
 
-  vcr::use_cassette("bold_identify_db_param", {
     aa <- bold_identify(seq, db = 'COX1_SPECIES')
     expect_is(aa, 'list')
     expect_is(aa[[1]], 'data.frame')
@@ -24,10 +24,10 @@ test_that("bold_identify db param works as expected", {
   })
 })
 
-test_that("bold_identify response param works as expected", {
-  skip_on_cran()
+vcr::use_cassette("bold_identify_response_param", {
+  test_that("bold_identify response param works as expected", {
+    skip_on_cran()
 
-  vcr::use_cassette("bold_identify_response_param", {
     aa <- bold_identify(seq, response = TRUE)
     expect_is(aa, "list")
     expect_is(aa[[1]], "HttpResponse")
@@ -40,4 +40,15 @@ test_that("bold_identify fails well", {
 
   expect_error(bold_identify(), 
     "argument \"sequences\" is missing, with no default")
+})
+
+test_that("bold_identify works for XML that contains &", {
+  seq <- "AACCCTATACTTTTTATTTGGAATTTGAGCGGGTATAGTAGGTACTAGCTTAAGTATATTAATTCGTCTAGAGCTAGGACAACCCGGTGTATTTTTAGAAGATGACCAAACCTATAACGTTATTGTAACAGCCCACGCTTTTATTATAATTTTCTTCATAATTATACCAATC
+    ATAATTGGA"
+  vcr::use_cassette("bold_identify_ampersands", {
+    aa <- bold_identify(seq)
+    expect_is(aa, 'list')
+    expect_is(aa[[1]], 'data.frame')
+    expect_is(aa[[1]]$ID, 'character')
+  })
 })
