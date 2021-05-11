@@ -7,7 +7,7 @@ bold
 [![cran checks](https://cranchecks.info/badges/worst/bold)](https://cranchecks.info/pkgs/bold)
 [![R-check](https://github.com/ropensci/bold/workflows/R-check/badge.svg)](https://github.com/ropensci/bold/actions/)
 [![codecov.io](https://codecov.io/github/ropensci/bold/coverage.svg?branch=master)](https://codecov.io/github/ropensci/bold?branch=master)
-[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/bold)](https://github.com/metacran/cranlogs.app)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/bold)](https://github.com/r-hub/cranlogs.app)
 
 `bold` accesses BOLD barcode data.
 
@@ -263,8 +263,4 @@ Get citation information for `bold` in R by running: `citation(package = 'bold')
 * Please [report any issues or bugs](https://github.com/ropensci/bold/issues)
 * License: MIT
 * Get citation information for `bold` in R doing `citation(package = 'bold')`
-* Please note that this project is released with a [Contributor Code of Conduct][coc]. By participating in this project you agree to abide by its terms.
-
-[![ropensci_footer](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
-
-[coc]: https://github.com/ropensci/bold/blob/master/CODE_OF_CONDUCT.md
+* Please note that this project is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/). By participating in this project you agree to abide by its terms.

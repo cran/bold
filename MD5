@@ -1,7 +1,7 @@
-1978cf1855ece763c4c64099cde53995 *DESCRIPTION
-35bd8606c71dfbfad3ad27387e177ad4 *LICENSE
+1954edf69eb6828f05cf7b03d6bbeac3 *DESCRIPTION
+cf4e0cb013e79711f193d003c0e4e16a *LICENSE
 19dc97bc26681640044166206b3e8b26 *NAMESPACE
-0b7c236142aa3351ecd8cfa2281435db *NEWS.md
+f2bb21dceed2d5f145962ec8a1e54356 *NEWS.md
 0c42606a2954e3d63ac1abd729b69d2a *R/bold-package.R
 a5f387f486d4fe1d6dbcd558064ccdbd *R/bold_filter.R
 f17342a89c3752d80f3c68d5eb177b00 *R/bold_identify.R
@@ -14,11 +14,8 @@ d4815b8bb27b55dbd53d023becc84ea7 *R/bold_seq.R
 46bc7b2f5e5ef2b7b856f14dfd300cb7 *R/bold_tax_name.R
 897dfc0467b7f512420cf7bfd36f1f5e *R/bold_trace.R
 116a624834e9a8b585249eac35d9e15d *R/zzz.R
-fe404a7a32d5e03ea0807d1227485d4a *README.md
-d9ba8a0e39a6cb25d3ca5e4e4b1d1d19 *build/vignette.rds
+83c1772bccc3ef50982a627f73114105 *README.md
 bb64a460c31e2e6821ac53870b09c38e *data/sequences.RData
-52234a7703d29c21a3ebe411f4fcd0ac *inst/doc/bold.Rmd
-5b0bf22e9e321036ab509fe1525dba3d *inst/doc/bold.html
 341b77b7b43111037a069acd01d91a5c *man/bold-package.Rd
 d75eccf95fc7ba8774c3942601be247c *man/bold_filter.Rd
 7940b1b29ed3f978e1b013e1348c2592 *man/bold_identify.Rd
@@ -73,5 +70,3 @@ fc46a405dba47527402cf268bf80d056 *tests/testthat/test-bold_seqspec.R
 c6faf6b5917bbc53f29f91f483c1f535 *tests/testthat/test-bold_stats.R
 12e4abff983a7aa937d4b9268ebe83ab *tests/testthat/test-bold_tax_id.R
 3c1d4ca3eea2f0aea19ee5e5d177b72a *tests/testthat/test-bold_tax_name.R
-52234a7703d29c21a3ebe411f4fcd0ac *vignettes/bold.Rmd
-2124decf72a15dcb2e912e9de2840031 *vignettes/bold.Rmd.og
