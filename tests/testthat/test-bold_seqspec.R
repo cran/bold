@@ -1,44 +1,61 @@
-# tests for bold_seqspec fxn in bold
 context("bold_seqspec")
 
-vcr::use_cassette("bold_seqspec_one", {
-  test_that("bold_seqspec returns the correct dimensions or values", {
-    skip_on_cran()
-
-    a <- bold_seqspec(taxon='Osmia')
-    expect_is(a, "data.frame")
-    expect_is(a$recordID, "integer")
-    expect_is(a$directions, "character")
-  })
-}, preserve_exact_body_bytes = FALSE)
-
-vcr::use_cassette("bold_seqspec_two", {
-  test_that("bold_seqspec returns the correct dimensions or values", {
-    skip_on_cran()
-
-    b <- bold_seqspec(taxon='Osmia', response=TRUE)
-    expect_equal(b$status_code, 200)
-    expect_equal(b$response_headers$`content-type`, "application/x-download")
-    expect_is(b, "HttpResponse")
-    expect_is(b$response_headers, "list")
-  })
-}, preserve_exact_body_bytes = FALSE)
-
-vcr::use_cassette("bold_seqspec_three", {
-  test_that("bold_seqspec returns the correct dimensions or values", {
-    skip_on_cran()
-    
-    dd <- bold_seqspec(taxon='Osmia', sepfasta=TRUE)
-    expect_is(dd, "list")
-    expect_is(dd$data, "data.frame")
-    expect_is(dd$fasta, "list")
-    expect_is(dd$fasta[[1]], "character")
-  })
-}, preserve_exact_body_bytes = FALSE)
-
-test_that("bold_seq returns correct error when parameters empty or not given", {
+test_that("bold_seqspec returns the correct object", {
   skip_on_cran()
+  vcr::use_cassette("bold_seqspec", {
+    test <- bold_seqspec(taxon = 'Coelioxys')
+  })
+  expect_is(test, "data.frame")
+  expect_is(test$recordID, "integer")
+  expect_is(test$directions, "character")
+})
 
-  expect_error(bold_seqspec(taxon=''), "must provide a non-empty value")
-  expect_error(bold_seqspec(), "must provide a non-empty value")
+test_that("bold_seqspec returns the correct object (response)", {
+  skip_on_cran()
+  vcr::use_cassette("bold_seqspec", {
+    test <- bold_seqspec(taxon = 'Coelioxys', response = TRUE)
+  })
+  expect_equal(test$status_code, 200)
+  expect_equal(test$response_headers$`content-type`, "application/x-download")
+  expect_is(test, "HttpResponse")
+  expect_is(test$response_headers, "list")
+})
+
+test_that("bold_seqspec returns the correct object (cleanData)", {
+  skip_on_cran()
+  vcr::use_cassette("bold_seqspec", {
+    test <- bold_seqspec(taxon = 'Coelioxys', cleanData = TRUE)
+  })
+  expect_is(test, "data.frame")
+  expect_is(test$recordID, "integer")
+  expect_is(test$directions, "character")
+  expect_false(any(test == "", na.rm = TRUE))
+})
+
+test_that("bold_seqspec returns the correct object (sepFasta)", {
+  skip_on_cran()
+  vcr::use_cassette("bold_seqspec", {
+    test <- bold_seqspec(taxon = 'Coelioxys', sepfasta = TRUE)
+  })
+  expect_is(test, "list")
+  expect_is(test$data, "data.frame")
+  expect_is(test$fasta, "list")
+  expect_is(test$fasta[[1]], "character")
+  expect_equal(nrow(test$data), length(test$fasta))
+})
+test_that("bold_seqspec returns the correct object (sepFasta, xml)", {
+  skip_on_cran()
+  vcr::use_cassette("bold_seqspec", {
+    test <- bold_seqspec(taxon = 'Coelioxys', sepfasta = TRUE, format = "xml")
+  })
+  expect_is(test, "list")
+  expect_is(test$data, "xml_document")
+  expect_is(test$fasta, "list")
+  expect_is(test$fasta[[1]], "character")
+  expect_equal(length(xml2::xml_children(test$data)), length(test$fasta))
+})
+
+test_that("bold_seq fails well", {
+  expect_error(bold_seqspec(taxon = ''), "You must provide a non-empty value to at least one of")
+  expect_error(bold_seqspec(), "You must provide a non-empty value to at least one of")
 })

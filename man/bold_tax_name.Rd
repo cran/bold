@@ -4,16 +4,27 @@
 \alias{bold_tax_name}
 \title{Search BOLD for taxonomy data by taxonomic name}
 \usage{
-bold_tax_name(name, fuzzy = FALSE, response = FALSE, ...)
+bold_tax_name(
+  name,
+  fuzzy = FALSE,
+  response = FALSE,
+  tax_division = NULL,
+  tax_rank = NULL,
+  ...
+)
 }
 \arguments{
 \item{name}{(character) One or more scientific names. required.}
 
 \item{fuzzy}{(logical) Whether to use fuzzy search or not (default: \code{FALSE})}
 
-\item{response}{(logical) Note that response is the object that returns
-from the Curl call, useful for debugging, and getting detailed info on
-the API call.}
+\item{response}{(logical) Default : FALSE. If TRUE, returns the object from
+the Curl call. Useful for debugging and getting more detailed info on the
+API call.}
+
+\item{tax_division}{(character) Taxonomic division to filter the results.}
+
+\item{tax_rank}{(character) Taxonomic rank to filter the results.}
 
 \item{...}{Further args passed on to
 \code{\link[crul:verb-GET]{crul::verb-GET}}, main purpose being curl
@@ -26,6 +37,9 @@ Search BOLD for taxonomy data by taxonomic name
 The \code{dataTypes} parameter is not supported in this function.
 If you want to use that parameter, get an ID from this function and pass
 it into \code{bold_tax_id}, and then use the \code{dataTypes} parameter.
+}
+\note{
+The column 'specimenrecords' in the returned object represents the number of species records in BOLD's \emph{Taxonomy Browser}, not the number of records in the \emph{Public Data Portal}. To know the amount of public records available, use \code{\link{bold_stats}}.
 }
 \examples{
 \dontrun{
@@ -50,8 +64,10 @@ bold_tax_name(name='Diplura', verbose = TRUE)
 }
 }
 \references{
-http://v4.boldsystems.org/index.php/resources/api?type=taxonomy
+Taxonomy API: http://v4.boldsystems.org/index.php/resources/api?type=taxonomy
+Taxonomy Browser: https://www.boldsystems.org/index.php/TaxBrowser_Home
+Public Data Portal: https://www.boldsystems.org/index.php/Public_BINSearch?searchtype=records
 }
 \seealso{
-\code{\link[=bold_tax_id]{bold_tax_id()}}
+\code{\link{bold_tax_id}}, \code{\link{bold_get_attr}}, \code{\link{bold_get_errors}}, \code{\link{bold_get_params}}
 }

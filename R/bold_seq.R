@@ -1,25 +1,23 @@
 #' Search BOLD for sequences.
 #'
-#' Get sequences for a taxonomic name, id, bin, container, institution, 
+#' Get sequences for a taxonomic name, id, bin, container, institution,
 #' researcher, geographic, place, or gene.
 #'
-#' @importFrom stringr str_replace_all str_replace str_split
-#' @export
 #' @template args
 #' @template otherargs
+#' @param marker (character) Returns all records containing matching
+#' marker codes.
 #' @template large-requests
 #' @template marker
-#' @references 
+#' @template missing-taxon
+#' @references
 #' http://v4.boldsystems.org/index.php/resources/api?type=webservices
 #'
-#' @param marker (character) Returns all records containing matching 
-#' marker codes.
+#' @return A data frame with each element as row and 5 columns for processid, identification,
+#' marker, accession, and sequence.
 #'
-#' @return A list with each element of length 4 with slots for id, name, 
-#' gene, and sequence.
-#' 
 #' @examples \dontrun{
-#' res <- bold_seq(taxon='Coelioxys')
+#' bold_seq(taxon='Coelioxys')
 #' bold_seq(taxon='Aglae')
 #' bold_seq(taxon=c('Coelioxys','Osmia'))
 #' bold_seq(ids='ACRJP618-11')
@@ -37,41 +35,58 @@
 #' res$response_headers
 #'
 #' ## curl debugging
-#' ### You can do many things, including get verbose output on the curl 
+#' ### You can do many things, including get verbose output on the curl
 #' ### call, and set a timeout
 #' bold_seq(taxon='Coelioxys', verbose = TRUE)[1:2]
-#' # bold_seqspec(taxon='Coelioxys', timeout_ms = 10)
 #' }
-
-bold_seq <- function(taxon = NULL, ids = NULL, bin = NULL, container = NULL, 
-  institutions = NULL, researchers = NULL, geo = NULL, marker = NULL, 
-  response=FALSE, ...) {
-  
-  args <- bc(
-    list(
-      taxon = pipeornull(taxon), geo = pipeornull(geo), 
-      ids = pipeornull(ids), bin = pipeornull(bin), 
-      container = pipeornull(container), 
-      institutions = pipeornull(institutions),
-      researchers = pipeornull(researchers), marker = pipeornull(marker)
-    )
+#'
+#' @export
+bold_seq <- function(taxon = NULL, ids = NULL, bin = NULL, container = NULL,
+                     institutions = NULL, researchers = NULL, geo = NULL,
+                     marker = NULL, response = FALSE, ...) {
+  response <- b_assert_logical(response, name = "response")
+  params <- b_pipe_params(
+    taxon = taxon,
+    ids = ids,
+    bin = bin,
+    container = container,
+    institutions = institutions,
+    researchers = researchers,
+    geo = geo,
+    marker = marker
   )
-  check_args_given_nonempty(
-    args, 
-    c('taxon','ids','bin','container','institutions','researchers',
-      'geo','marker')
-  )
-  out <- b_GET(paste0(bbase(), 'API_Public/sequence'), args, ...)
-  if (response) { 
-    out 
+  res <- b_GET(query = params,
+               api = 'API_Public/sequence', ...)
+  if (response) {
+    res
   } else {
-    tt <- out$parse("UTF-8")
-    if (grepl("error", tt)) {
-      warning("the request timed out, see 'If a request times out'\n",
-        "returning partial output")
-      tt <- strdrop(str = tt, pattern = "Fatal+")[[1]]
-    }
-    res <- strsplit(tt, ">")[[1]][-1]
-    lapply(res, split_fasta)
+    b_parse(res, format = "fasta", raise = TRUE)
+  }
+}
+b_read_fasta <- function(x){
+  x <- b_lines(str = x)
+  if (length(x) %% 2 && # if length(x) %% 2 not 0, it's TRUE
+      b_detect(x[length(x)], "^\\s*$")) {
+      x <- x[-length(x)]
+  }
+  id_line <- b_detect(x,"^>")
+  n <- which(id_line)
+  id <- b_split(str = x[id_line], pattern = ">|\\|", omit_empty = TRUE, simplify = NA, n = 4)
+  id <- `names<-`(as.data.frame(id), c("processid", "identification", "marker", "accession"))
+  if (all(diff(c(n, length(x) + 1L)) == 2)) {
+    sequence <- x[n + 1L]
+    data.frame(id, sequence)
+  } else if (sum(id_line) == sum(!id_line)) {
+    # shouldn't happen but who knows
+    warning("The file had an even number of ids and sequences, but they weren't in the proper order.",
+            "\n  This shouldn't happen. Output may contain errors.",
+            "\n  Please open an issue so we can see when this happens.")
+    sequence <- x[!id_line]
+    data.frame(id, sequence)
+  } else {
+    warning("The file had an uneven number of ids and sequenceuences.",
+            "\n  This shouldn't happen. Returning data as a list of lines.",
+            "\n  Please open an issue so we can see when this happens.")
+    x
   }
 }
